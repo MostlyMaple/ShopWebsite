@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content%}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="">Topics</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{%url 'home'%}?q=shirt">Shirts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{%url 'home'%}?q=pants">Pants</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{%url 'home'%}?q=accessories">Accessories</a>
+          </li>
+      </ul>
+    </div>
+  </nav>
+
+    <div class="row" style="margin: 3%;">
+        {% for item in items %}
+        <div class="col-lg-4">
+            {% if item.image %}
+            <img class="thumbnail" src="{{item.image.url}}">
+            {% else %}
+            <img class="thumbnail" src="{% static 'images/placeholder.png' %}">
+            {% endif %}
+            <div class="box-element product">
+                <h6><strong>{{item.item_name}}</strong></h6>
+                <hr>
+                <button data-product="{{item.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add To Cart</button>
+                <a href="{%url 'item' item.id%}" class="btn btn-outline-success">View</a>
+                {% if request.user.is_superuser %}
+                <a href="{%url 'updateItem' item.id%}" class="btn btn-outline-secondary add-btn">Edit</a>
+                <a href="{%url 'deleteItem' item.id%}" class="btn btn-outline-secondary add-btn">Delete</a>
+                {% endif %}
+                <h4 style="display: inline-block;float: right;">${{item.price}}</h4>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+
+
+{% endblock content%}
